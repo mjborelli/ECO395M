@@ -1,0 +1,49 @@
+---
+title: "Homework 1"
+author: "Matthew Borelli"
+date: "2/2/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 1
+```{r include=FALSE}
+library(tidyverse)
+ABIA = read.csv("D:/Documents/MA_Econ/Spring/ECO395M/data/ABIA.csv", header=TRUE)
+```
+
+```{r include=FALSE}
+head(ABIA)
+```      
+```{r, include=FALSE}
+daytable = table(ABIA$DayOfWeek,ABIA$Cancelled,ABIA$CancellationCode)
+dayframe = as.data.frame(daytable, stringsAsFactors = FALSE)
+dayframe = dayframe[c(22:28, 36:42, 50:56),]
+colnames(dayframe) = c("Day","Cancelled", "CancellationCode","FlightsCancelled")
+days = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+codes = c("Carrier", "Weather", "NAS")
+letters = c("A", "B", "C")
+dayframe$Day = as.character(dayframe$Day)
+for (i in 1 : 7) {
+  dayframe$Day[dayframe$Day == i] = days[i]
+}
+for (k in 1 : 3) {
+  dayframe$CancellationCode[dayframe$CancellationCode == letters[k]] = codes[k]
+}
+dayframe$Day = factor(dayframe$Day,unique(dayframe$Day))
+dayframe
+```
+
+```{r}
+ggplot(dayframe, mapping = aes(x = Day , y = FlightsCancelled)) +
+  geom_bar(mapping = aes(Day, FlightsCancelled), stat = "identity") +
+  facet_wrap(~ CancellationCode) +
+  theme_classic() +
+  theme(axis.text.x=element_text(angle = 90, hjust = 0)) +
+  labs(title = "Number of Flight Cancellations by Day of the Week and Cause")
+  # ylab = ("# of Flights Cancelled") +
+  # xlab = ("Day of the Week")
+```
