@@ -91,4 +91,4 @@ trim types at specified:
 
 ### Trim: 350
 
--   (K = 3) = `rmse_3_350`
+-   (K = 3) = 1.258523110^{4}

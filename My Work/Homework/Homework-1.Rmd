@@ -164,5 +164,5 @@ rmse_3_65 = rmse(y_test65, ypred_knn200_65)
 The following are the Root Mean-Squared Errors (RMSE) for each of the trim types at specified:
 
 ### Trim: 350
-- (K = 3) = `rmse_3_350`
+- (K = 3) = `r rmse_3_350`
 
