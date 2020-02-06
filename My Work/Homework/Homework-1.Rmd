@@ -71,7 +71,7 @@ plot(price ~ mileage, data = sclass350)
 plot(price ~ mileage, data = sclass65AMG)
 ```
 ```{r split, echo=FALSE}
-#First step is to make the train-test split
+#F irst step is to make the train-test split
 N350 = nrow(sclass350)
 N_train350 = floor(0.8*N350)
 N_test350 = N350 - N_train350
@@ -105,8 +105,8 @@ X_test65 = select(D_test65, mileage)
 y_test65 = select(D_test65, price)
 
 # I get the error "Error in as.matrix(x)[i] : subscript out of bounds"
-# when I try to set k = 2, so I will just start at k = 3 unless I can figure something out
-knn3_350 = knn.reg(train = X_train350, test = X_test350, y = y_train350, k=3)
+# when I try to set k = 2, so I will just start at k = 5 unless I can figure something out
+knn5_350 = knn.reg(train = X_train350, test = X_test350, y = y_train350, k=5)
 knn10_350 = knn.reg(train = X_train350, test = X_test350, y = y_train350, k=10)
 knn25_350 = knn.reg(train = X_train350, test = X_test350, y = y_train350, k=25)
 knn50_350 = knn.reg(train = X_train350, test = X_test350, y = y_train350, k=50)
@@ -114,7 +114,7 @@ knn100_350 = knn.reg(train = X_train350, test = X_test350, y = y_train350, k=100
 knn150_350 = knn.reg(train = X_train350, test = X_test350, y = y_train350, k=150)
 knn200_350 = knn.reg(train = X_train350, test = X_test350, y = y_train350, k=200)
 
-knn3_65 = knn.reg(train = X_train65, test = X_test65, y = y_train65, k=3)
+knn5_65 = knn.reg(train = X_train65, test = X_test65, y = y_train65, k=5)
 knn10_65 = knn.reg(train = X_train65, test = X_test65, y = y_train65, k=10)
 knn25_65 = knn.reg(train = X_train65, test = X_test65, y = y_train65, k=25)
 knn50_65 = knn.reg(train = X_train65, test = X_test65, y = y_train65, k=50)
@@ -128,7 +128,7 @@ rmse = function(y, ypred) {
 }
 
 # create predictions
-ypred_knn3_350 = knn3_350$pred
+ypred_knn5_350 = knn5_350$pred
 ypred_knn10_350 = knn10_350$pred
 ypred_knn25_350 = knn25_350$pred
 ypred_knn50_350 = knn50_350$pred
@@ -136,7 +136,7 @@ ypred_knn100_350 = knn100_350$pred
 ypred_knn150_350 = knn150_350$pred
 ypred_knn200_350 = knn200_350$pred
 
-ypred_knn3_65 = knn3_65$pred
+ypred_knn5_65 = knn5_65$pred
 ypred_knn10_65 = knn10_65$pred
 ypred_knn25_65 = knn25_65$pred
 ypred_knn50_65 = knn50_65$pred
@@ -145,7 +145,7 @@ ypred_knn150_65 = knn150_65$pred
 ypred_knn200_65 = knn200_65$pred
 
 #create RMSE values
-rmse_3_350 = rmse(y_test350, ypred_knn3_350)
+rmse_5_350 = (rmse(y_test350, ypred_knn5_350))
 rmse_10_350 = rmse(y_test350, ypred_knn10_350)
 rmse_25_350 = rmse(y_test350, ypred_knn25_350)
 rmse_50_350 = rmse(y_test350, ypred_knn50_350)
@@ -153,16 +153,37 @@ rmse_100_350 = rmse(y_test350, ypred_knn100_350)
 rmse_150_350 = rmse(y_test350, ypred_knn150_350)
 rmse_200_350 = rmse(y_test350, ypred_knn200_350)
 
-rmse_3_65 = rmse(y_test65, ypred_knn3_65)
-rmse_3_65 = rmse(y_test65, ypred_knn10_65)
-rmse_3_65 = rmse(y_test65, ypred_knn25_65)
-rmse_3_65 = rmse(y_test65, ypred_knn50_65)
-rmse_3_65 = rmse(y_test65, ypred_knn100_65)
-rmse_3_65 = rmse(y_test65, ypred_knn150_65)
-rmse_3_65 = rmse(y_test65, ypred_knn200_65)
+rmse_5_65 = round(rmse(y_test65, ypred_knn5_65))
+rmse_10_65 = rmse(y_test65, ypred_knn10_65)
+rmse_25_65 = rmse(y_test65, ypred_knn25_65)
+rmse_50_65 = rmse(y_test65, ypred_knn50_65)
+rmse_100_65 = rmse(y_test65, ypred_knn100_65)
+rmse_150_65 = rmse(y_test65, ypred_knn150_65)
+rmse_200_65 = rmse(y_test65, ypred_knn200_65)
 ```
 The following are the Root Mean-Squared Errors (RMSE) for each of the trim types at specified:
 
 ### Trim: 350
-- (K = 3) = `r rmse_3_350`
+- (K = 5) = `r rmse_5_350`
+- (K = 10) = `r rmse_10_350`
+- (K = 25) = `r rmse_25_350`
+- (K = 50) = `r rmse_50_350`
+- (K = 100) = `r rmse_100_350`
+- (K = 150) = `r rmse_150_350`
+- (K = 200) = `r rmse_200_350`
+
+### Trim: 65 AMG
+- (K = 5) = `r rmse_10_65`
+- (K = 10) = `r rmse_10_65`
+- (K = 25) = `r rmse_10_65`
+- (K = 50) = `r rmse_50_65`
+- (K = 100) = `r rmse_100_65`
+- (K = 150) = `r rmse_150_65`
+- (K = 200) = `r rmse_200_65`
+
+We can look at plots of RMSE versus K to estimate what the optimal K is for each trim.
+
+```{r plots, echo = FALSE}
+D_test350$ypred_knn250 = ypred_knn250
+```
 
