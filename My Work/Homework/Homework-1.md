@@ -18,7 +18,38 @@ Question 2
 The following is from the code Dr. Scott provided that extracts the 350
 and 65 AMG trim levels as subsets of the data.
 
-    ## [1] 416  17
+    ##        id             trim       subTrim    condition  isOneOwner
+    ##  Min.   :  282   350    :416   Hybrid:  0   CPO :131   f:310     
+    ##  1st Qu.:14290   320    :  0   unsp  :416   New : 15   t:106     
+    ##  Median :26658   400    :  0                Used:270             
+    ##  Mean   :26520   420    :  0                                     
+    ##  3rd Qu.:39599   430    :  0                                     
+    ##  Max.   :52220   450    :  0                                     
+    ##                  (Other):  0                                     
+    ##     mileage            year          color      displacement
+    ##  Min.   :     6   Min.   :1994   Black  :219   3.0 L  :302  
+    ##  1st Qu.: 19264   1st Qu.:2006   Silver : 77   3.7 L  :109  
+    ##  Median : 29998   Median :2012   White  : 48   3.5 L  :  5  
+    ##  Mean   : 42926   Mean   :2010   Gray   : 30   3.2 L  :  0  
+    ##  3rd Qu.: 63479   3rd Qu.:2012   unsp   : 21   4.2 L  :  0  
+    ##  Max.   :173000   Max.   :2013   Blue   : 11   4.3 L  :  0  
+    ##                                  (Other): 10   (Other):  0  
+    ##        fuel         state         region             soundSystem 
+    ##  Diesel  :307   CA     : 57   SoA    :138   Alpine         :  0  
+    ##  Gasoline:109   FL     : 47   Pac    : 68   Bang Olufsen   :  5  
+    ##  Hybrid  :  0   TX     : 41   Mid    : 52   Bose           : 18  
+    ##  unsp    :  0   IL     : 37   ENC    : 51   Boston Acoustic:  0  
+    ##                 VA     : 32   WSC    : 45   Harman Kardon  :106  
+    ##                 NJ     : 27   New    : 24   Premium        :130  
+    ##                 (Other):175   (Other): 38   unsp           :157  
+    ##    wheelType     wheelSize    featureCount        price       
+    ##  Alloy  :225   unsp   :384   Min.   :  0.00   Min.   :  6600  
+    ##  Chrome :  1   18     : 12   1st Qu.: 31.75   1st Qu.: 19401  
+    ##  Premium:  6   17     : 10   Median : 54.00   Median : 52900  
+    ##  Steel  :  0   19     :  6   Mean   : 49.22   Mean   : 46854  
+    ##  unsp   :184   20     :  4   3rd Qu.: 70.00   3rd Qu.: 61991  
+    ##                16     :  0   Max.   :112.00   Max.   :106010  
+    ##                (Other):  0
 
     ##        id             trim       subTrim    condition  isOneOwner
     ##  Min.   : 1060   65 AMG :292   Hybrid:  0   CPO : 26   f:254     
@@ -55,4 +86,6 @@ and 65 AMG trim levels as subsets of the data.
 
 ![](Homework-1_files/figure-markdown_strict/subset-1.png)![](Homework-1_files/figure-markdown_strict/subset-2.png)
 
-    rmarkdown::render("Homework 1.Rmd", "markdown")
+The following are the Root Mean-Squared Errors (RMSE) for each of the
+trim types at specified: \#\#\#\#\#\# Trim: 350 - (K = 3) =
+`rmse(y_test350, ypred_knn3_350)`
