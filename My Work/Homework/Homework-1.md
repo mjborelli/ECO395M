@@ -87,5 +87,5 @@ and 65 AMG trim levels as subsets of the data.
 ![](Homework-1_files/figure-markdown_strict/subset-1.png)![](Homework-1_files/figure-markdown_strict/subset-2.png)
 
 The following are the Root Mean-Squared Errors (RMSE) for each of the
-trim types at specified: \#\#\#\#\#\# Trim: 350 - (K = 3) =
+trim types at specified: \#\#\#\# Trim: 350 - (K = 3) =
 `rmse(y_test350, ypred_knn3_350)`
