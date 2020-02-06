@@ -2,7 +2,7 @@
 title: "Homework 1"
 author: "Matthew Borelli"
 date: "2/2/2020"
-output: html_document
+output: md_document
 ---
 
 ```{r setup, include=FALSE}
@@ -10,15 +10,15 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Question 1
-```{r include=FALSE}
+```{r ABIA, include=FALSE}
 library(tidyverse)
 ABIA = read.csv("D:/Documents/MA_Econ/Spring/ECO395M/data/ABIA.csv", header=TRUE)
 ```
 
-```{r include=FALSE}
+```{r head, include=FALSE}
 head(ABIA)
 ```      
-```{r, include=FALSE}
+```{r frame, include=FALSE}
 daytable = table(ABIA$DayOfWeek,ABIA$Cancelled,ABIA$CancellationCode)
 dayframe = as.data.frame(daytable, stringsAsFactors = FALSE)
 dayframe = dayframe[c(22:28, 36:42, 50:56),]
@@ -36,14 +36,41 @@ for (k in 1 : 3) {
 dayframe$Day = factor(dayframe$Day,unique(dayframe$Day))
 dayframe
 ```
+With our Austin flight data, I wanted to look at cancellations not just by the day of the week, but also by the listed cause of delay.
 
-```{r}
+```{r ggplot, echo=FALSE}
 ggplot(dayframe, mapping = aes(x = Day , y = FlightsCancelled)) +
-  geom_bar(mapping = aes(Day, FlightsCancelled), stat = "identity") +
+  geom_bar(mapping = aes(Day, FlightsCancelled), stat = "identity", fill = "dark blue") +
   facet_wrap(~ CancellationCode) +
-  theme_classic() +
+  theme_grey() +
   theme(axis.text.x=element_text(angle = 90, hjust = 0)) +
   labs(title = "Number of Flight Cancellations by Day of the Week and Cause")
-  # ylab = ("# of Flights Cancelled") +
-  # xlab = ("Day of the Week")
 ```
+
+There are some clear trends that can be seen in these bar graphs. Carrier cancellations are most common during the week and less common on weekend flights. NAS cancellations are more common on Monday and Tuesday, with the rest of the days being fairly similar. Lastly, weather delays are more common on weekends, but Tuesday seems to be an outlier.
+
+## Question 2
+
+```{r sclass, include=FALSE}
+sclass = read.csv("D:/Documents/MA_Econ/Spring/ECO395M/data/sclass.csv")
+library(mosaic)
+```
+
+The following is from the code Dr. Scott provided that extracts the 350 and 65 AMG trim levels as subsets of the data.
+
+```{r subset, echo=FALSE}
+sclass350 = subset(sclass, trim == '350')
+dim(sclass350)
+
+sclass65AMG = subset(sclass, trim == '65 AMG')
+summary(sclass65AMG)
+
+# Look at price vs mileage for each trim level
+plot(price ~ mileage, data = sclass350)
+plot(price ~ mileage, data = sclass65AMG)
+```
+
+```
+rmarkdown::render("Homework 1.Rmd", "markdown")
+```
+
