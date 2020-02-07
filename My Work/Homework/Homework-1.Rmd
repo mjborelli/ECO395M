@@ -32,7 +32,8 @@ for (k in 1 : 3) {
 }
 dayframe$Day = factor(dayframe$Day,unique(dayframe$Day))
 ```
-With our Austin flight data, I wanted to look at cancellations not just by the day of the week, but also by the listed cause of delay.
+### Data
+We started with data on commercial flights arriving or departing from Austin in the year 2008. With our data, I wanted to look at cancellations not just by the day of the week, but also by the listed cause of delay.
 
 ```{r ggplot, echo=FALSE}
 ggplot(dayframe, mapping = aes(x = Day , y = FlightsCancelled)) +
@@ -43,6 +44,7 @@ ggplot(dayframe, mapping = aes(x = Day , y = FlightsCancelled)) +
   labs(title = "Number of Flight Cancellations by Day of the Week and Cause")
 ```
 
+### Conclusions
 There are some clear trends that can be seen in these bar graphs. Carrier cancellations are most common during the week and less common on weekend flights. NAS cancellations are more common on Monday and Tuesday, with the rest of the days being fairly similar. Lastly, weather delays are more common on weekends, but Tuesday seems to be an outlier.
 
 ## Question 2
@@ -53,7 +55,8 @@ library(mosaic)
 library(FNN)
 ```
 
-The following is from the code Dr. Scott provided that extracts the 350 and 65 AMG trim levels as subsets of the data.
+### Data
+The following are plots that show the price and mileage for Mercedes S-Class vehicles by trim.
 
 ```{r subset, echo=FALSE}
 sclass350 = subset(sclass, trim == '350')
@@ -158,7 +161,9 @@ rmse_100_65 = rmse(y_test65, ypred_knn100_65)
 rmse_150_65 = rmse(y_test65, ypred_knn150_65)
 rmse_200_65 = rmse(y_test65, ypred_knn200_65)
 ```
-The following are the Root Mean-Squared Errors (RMSE) for each of the trim types at specified:
+### Process
+
+The goal is to predict the price of a S-Class vehicle by it's mileage. This will be done separately for the 350 and 65 AMG trims using the K-Nearest Neighbors method of prediction, which averages a specifiedThe following are the Root Mean-Squared Errors (RMSE) for each of the trim types at specified:
 ```{r note, include=FALSE}
 # I originally wanted to do inline code to display the values, but they would not translate to R correctly.
 ```
@@ -195,6 +200,7 @@ for (j in 5 : 200) {
 ```{r plyr, include=FALSE}
 library(plyr)
 ```
+### Results
 ```{r rename, include=FALSE}
 rename(KRMSE350, c("numeric.5." = "RMSE", "numeric.1." = "K"))
 ```
@@ -258,5 +264,5 @@ p_train350 = ggplot(data = D_train350) +
   labs(title = "Predictions for 350 Trim")
 p_train350
 ```
-
+### Conclusion
 Of the two trims, the 350 trim has a higher optimal K than the 65 AMG trim. This has nothing to do with the difference in the trims. The main reason for the difference is that the subset of S-Class cars with 350 trim is larger than the subset with 65 AMG trim. When you have more data, the optimal value for K increases because your points will be closer together and therefore create better predictions.

@@ -1,10 +1,16 @@
 Question 1
 ----------
 
-With our Austin flight data, I wanted to look at cancellations not just
-by the day of the week, but also by the listed cause of delay.
+### Data
+
+We started with data on commercial flights arriving or departing from
+Austin in the year 2008. With our data, I wanted to look at
+cancellations not just by the day of the week, but also by the listed
+cause of delay.
 
 ![](Homework-1_files/figure-markdown_strict/ggplot-1.png)
+
+### Conclusions
 
 There are some clear trends that can be seen in these bar graphs.
 Carrier cancellations are most common during the week and less common on
@@ -15,13 +21,20 @@ delays are more common on weekends, but Tuesday seems to be an outlier.
 Question 2
 ----------
 
-The following is from the code Dr. Scott provided that extracts the 350
-and 65 AMG trim levels as subsets of the data.
+### Data
+
+The following are plots that show the price and mileage for Mercedes
+S-Class vehicles by trim.
 
 ![](Homework-1_files/figure-markdown_strict/subset-1.png)![](Homework-1_files/figure-markdown_strict/subset-2.png)
 
-The following are the Root Mean-Squared Errors (RMSE) for each of the
-trim types at specified:
+### Process
+
+The goal is to predict the price of a S-Class vehicle by it’s mileage.
+This will be done separately for the 350 and 65 AMG trims using the
+K-Nearest Neighbors method of prediction, which averages a specifiedThe
+following are the Root Mean-Squared Errors (RMSE) for each of the trim
+types at specified:
 
 ### Trim: 350
 
@@ -46,6 +59,8 @@ trim types at specified:
 We can look at plots of RMSE versus K to estimate what the optimal K is
 for each trim.
 
+### Results
+
 ![](Homework-1_files/figure-markdown_strict/plots2-1.png)
 
 For the 350 trim, our optimum value of K is K = 50
@@ -55,10 +70,9 @@ to tell for the 65 AMG trim, but it seems that our optimal K is
 approximately 25.
 
 ![](Homework-1_files/figure-markdown_strict/plotting-1.png)![](Homework-1_files/figure-markdown_strict/plotting-2.png)
-
-Of the two trims, the 350 trim has a higher optimal K than the 65 AMG
-trim. This has nothing to do with the difference in the trims. The main
-reason for the difference is that the subset of S-Class cars with 350
-trim is larger than the subset with 65 AMG trim. When you have more
-data, the optimal value for K increases because your points will be
-closer together and therefore create better predictions.
+\#\#\# Conclusion Of the two trims, the 350 trim has a higher optimal K
+than the 65 AMG trim. This has nothing to do with the difference in the
+trims. The main reason for the difference is that the subset of S-Class
+cars with 350 trim is larger than the subset with 65 AMG trim. When you
+have more data, the optimal value for K increases because your points
+will be closer together and therefore create better predictions.
