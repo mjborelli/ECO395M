@@ -65,14 +65,18 @@ for each trim.
 
 For the 350 trim, our optimum value of K is K = 50
 
-![](Homework-1_files/figure-markdown_strict/65plot-1.png) It is harder
-to tell for the 65 AMG trim, but it seems that our optimal K is
-approximately 25.
+![](Homework-1_files/figure-markdown_strict/65plot-1.png)
+
+It is harder to tell for the 65 AMG trim, but it seems that our optimal
+K is approximately 25.
 
 ![](Homework-1_files/figure-markdown_strict/plotting-1.png)![](Homework-1_files/figure-markdown_strict/plotting-2.png)
-\#\#\# Conclusion Of the two trims, the 350 trim has a higher optimal K
-than the 65 AMG trim. This has nothing to do with the difference in the
-trims. The main reason for the difference is that the subset of S-Class
-cars with 350 trim is larger than the subset with 65 AMG trim. When you
-have more data, the optimal value for K increases because your points
-will be closer together and therefore create better predictions.
+
+### Conclusion
+
+Of the two trims, the 350 trim has a higher optimal K than the 65 AMG
+trim. This has nothing to do with the difference in the trims. The main
+reason for the difference is that the subset of S-Class cars with 350
+trim is larger than the subset with 65 AMG trim. When you have more
+data, the optimal value for K increases because your points will be
+closer together and therefore create better predictions.

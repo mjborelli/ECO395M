@@ -236,6 +236,7 @@ ggplot(data=KRMSE65, aes(x=KRMSE65[,2], y=KRMSE65[,1])) +
   labs(x = "K", y = "RMSE", title = "K v. RMSE for 65 AMG Trim")+
   xlim(5,200)
 ```
+
 It is harder to tell for the 65 AMG trim, but it seems that our optimal K is approximately 25.
 
 ```{r plot setups, include=FALSE}
@@ -264,5 +265,7 @@ p_train350 = ggplot(data = D_train350) +
   labs(title = "Predictions for 350 Trim")
 p_train350
 ```
+
 ### Conclusion
+
 Of the two trims, the 350 trim has a higher optimal K than the 65 AMG trim. This has nothing to do with the difference in the trims. The main reason for the difference is that the subset of S-Class cars with 350 trim is larger than the subset with 65 AMG trim. When you have more data, the optimal value for K increases because your points will be closer together and therefore create better predictions.
