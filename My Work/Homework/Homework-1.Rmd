@@ -114,6 +114,7 @@ knn100_350 = knn.reg(train = X_train350, test = X_test350, y = y_train350, k=100
 knn150_350 = knn.reg(train = X_train350, test = X_test350, y = y_train350, k=150)
 knn200_350 = knn.reg(train = X_train350, test = X_test350, y = y_train350, k=200)
 
+
 knn5_65 = knn.reg(train = X_train65, test = X_test65, y = y_train65, k=5)
 knn10_65 = knn.reg(train = X_train65, test = X_test65, y = y_train65, k=10)
 knn25_65 = knn.reg(train = X_train65, test = X_test65, y = y_train65, k=25)
@@ -145,7 +146,7 @@ ypred_knn150_65 = knn150_65$pred
 ypred_knn200_65 = knn200_65$pred
 
 #create RMSE values
-rmse_5_350 = (rmse(y_test350, ypred_knn5_350))
+rmse_5_350 = rmse(y_test350, ypred_knn5_350)
 rmse_10_350 = rmse(y_test350, ypred_knn10_350)
 rmse_25_350 = rmse(y_test350, ypred_knn25_350)
 rmse_50_350 = rmse(y_test350, ypred_knn50_350)
@@ -153,7 +154,7 @@ rmse_100_350 = rmse(y_test350, ypred_knn100_350)
 rmse_150_350 = rmse(y_test350, ypred_knn150_350)
 rmse_200_350 = rmse(y_test350, ypred_knn200_350)
 
-rmse_5_65 = round(rmse(y_test65, ypred_knn5_65))
+rmse_5_65 = rmse(y_test65, ypred_knn5_65)
 rmse_10_65 = rmse(y_test65, ypred_knn10_65)
 rmse_25_65 = rmse(y_test65, ypred_knn25_65)
 rmse_50_65 = rmse(y_test65, ypred_knn50_65)
@@ -173,9 +174,9 @@ The following are the Root Mean-Squared Errors (RMSE) for each of the trim types
 - (K = 200) = `r rmse_200_350`
 
 ### Trim: 65 AMG
-- (K = 5) = `r rmse_10_65`
+- (K = 5) = `r rmse_5_65`
 - (K = 10) = `r rmse_10_65`
-- (K = 25) = `r rmse_10_65`
+- (K = 25) = `r rmse_25_65`
 - (K = 50) = `r rmse_50_65`
 - (K = 100) = `r rmse_100_65`
 - (K = 150) = `r rmse_150_65`
@@ -184,6 +185,49 @@ The following are the Root Mean-Squared Errors (RMSE) for each of the trim types
 We can look at plots of RMSE versus K to estimate what the optimal K is for each trim.
 
 ```{r plots, echo = FALSE}
-D_test350$ypred_knn250 = ypred_knn250
+# For trim 350
+KRMSE350 = data.frame(numeric(5), numeric(1))
+for (j in 5 : 200) {
+  knn350 = knn.reg(train = X_train350, test = X_test350, y = y_train350, k=j)
+  ypred_knn350 = knn350$pred
+  KRMSE350[j, 1] = rmse(y_test350, ypred_knn350)
+  KRMSE350[j, 2] = j
+}
+library(plyr)
+rename(KRMSE350, c("numeric.5." = "RMSE", "numeric.1." = "K"))
+#getting rid of first four rows (no values)
+ggplot(data=KRMSE350, aes(x=KRMSE350[,2], y=KRMSE350[,1])) +
+  geom_line(aes(x=KRMSE350[,2], y=KRMSE350[,1]))+
+  labs(x = "K", y = "RMSE", title = "K v. RMSE for 350 Trim")+
+  xlim(5,200)
 ```
+For the 350 trim, our optimum value of K is K = 15
 
+```{r plots65, echo = FALSE}
+# For trim 350
+KRMSE65 = data.frame(numeric(5), numeric(1))
+for (j in 5 : 200) {
+  knn65 = knn.reg(train = X_train65, test = X_test65, y = y_train65, k=j)
+  ypred_knn65 = knn65$pred
+  KRMSE65[j, 1] = rmse(y_test65, ypred_knn65)
+  KRMSE65[j, 2] = j
+}
+library(plyr)
+rename(KRMSE65, c("numeric.5." = "RMSE", "numeric.1." = "K"))
+#getting rid of first four rows (no values)
+ggplot(data=KRMSE65, aes(x=KRMSE65[,2], y=KRMSE65[,1])) +
+  geom_line(aes(x=KRMSE65[,2], y=KRMSE65[,1]))+
+  labs(x = "K", y = "RMSE", title = "K v. RMSE for 65 AMG Trim")+
+  xlim(5,200)
+```
+It is harder to tell for the 65 AMG trim, but it seems that our optimal K is approximately 25.
+
+```{r final_plots}
+knn_model65 = knn.reg(X_train65, X_train65, y_train65, k = 15)
+
+D_train65$ypred = knn_model65$pred
+p_train65 = ggplot(data = D_train65) + 
+  geom_point(mapping = aes(x = mileage, y = price), color='lightgrey') + 
+  theme_bw(base_size=18) + 
+  ylim(7000, 20000) + xlim(0,36)
+p_train65 + geom_path(mapping = aes(x=mileage, y=ypred), color='red', size=1.5)
