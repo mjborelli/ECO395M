@@ -31,7 +31,6 @@ for (k in 1 : 3) {
   dayframe$CancellationCode[dayframe$CancellationCode == letters[k]] = codes[k]
 }
 dayframe$Day = factor(dayframe$Day,unique(dayframe$Day))
-dayframe
 ```
 With our Austin flight data, I wanted to look at cancellations not just by the day of the week, but also by the listed cause of delay.
 
@@ -58,10 +57,8 @@ The following is from the code Dr. Scott provided that extracts the 350 and 65 A
 
 ```{r subset, echo=FALSE}
 sclass350 = subset(sclass, trim == '350')
-summary(sclass350)
 
 sclass65AMG = subset(sclass, trim == '65 AMG')
-summary(sclass65AMG)
 
 # Look at price vs mileage for each trim level
 plot(price ~ mileage, data = sclass350)
@@ -162,24 +159,26 @@ rmse_150_65 = rmse(y_test65, ypred_knn150_65)
 rmse_200_65 = rmse(y_test65, ypred_knn200_65)
 ```
 The following are the Root Mean-Squared Errors (RMSE) for each of the trim types at specified:
-
+```
+# I originally wanted to do inline code to display the values, but they would not translate to R correctly.
+```
 ### Trim: 350
-- (K = 5) = `r rmse_5_350`
-- (K = 10) = `r rmse_10_350`
-- (K = 25) = `r rmse_25_350`
-- (K = 50) = `r rmse_50_350`
-- (K = 100) = `r rmse_100_350`
-- (K = 150) = `r rmse_150_350`
-- (K = 200) = `r rmse_200_350`
+- (K = 5) = 10550.83
+- (K = 10) = 9749.663
+- (K = 25) = 10042.9
+- (K = 50) = 10534.91
+- (K = 100) = 10534.91
+- (K = 150) = 14366.23
+- (K = 200) = 16562.14
 
 ### Trim: 65 AMG
-- (K = 5) = `r rmse_5_65`
-- (K = 10) = `r rmse_10_65`
-- (K = 25) = `r rmse_25_65`
-- (K = 50) = `r rmse_50_65`
-- (K = 100) = `r rmse_100_65`
-- (K = 150) = `r rmse_150_65`
-- (K = 200) = `r rmse_200_65`
+- (K = 5) = 26064.08
+- (K = 10) = 24250.16
+- (K = 25) = 23160.28
+- (K = 50) = 24296.19
+- (K = 100) = 35937.45
+- (K = 150) = 53763.28
+- (K = 200) = 73465.3
 
 We can look at plots of RMSE versus K to estimate what the optimal K is for each trim.
 
@@ -192,9 +191,14 @@ for (j in 5 : 200) {
   KRMSE350[j, 1] = rmse(y_test350, ypred_knn350)
   KRMSE350[j, 2] = j
 }
+```
+```{r plyr, include=FALSE}
 library(plyr)
+```
+```{r rename, include=FALSE}
 rename(KRMSE350, c("numeric.5." = "RMSE", "numeric.1." = "K"))
-#getting rid of first four rows (no values)
+```
+```{r plots2, echo = FALSE}
 ggplot(data=KRMSE350, aes(x=KRMSE350[,2], y=KRMSE350[,1])) +
   geom_line(aes(x=KRMSE350[,2], y=KRMSE350[,1]))+
   labs(x = "K", y = "RMSE", title = "K v. RMSE for 350 Trim")+
@@ -213,11 +217,13 @@ for (j in 5 : 200) {
   KRMSE65[j, 2] = j
 }
 ```
-```
+```{r plyr2, include=FALSE}
 library(plyr)
 ```
-```{r 65plot, echo=FALSE}
+```{r rename2, include=FALSE}
 rename(KRMSE65, c("numeric.5." = "RMSE", "numeric.1." = "K"))
+```
+```{r 65plot, echo=FALSE}
 #getting rid of first four rows (no values)
 ggplot(data=KRMSE65, aes(x=KRMSE65[,2], y=KRMSE65[,1])) +
   geom_line(aes(x=KRMSE65[,2], y=KRMSE65[,1]))+
@@ -226,10 +232,18 @@ ggplot(data=KRMSE65, aes(x=KRMSE65[,2], y=KRMSE65[,1])) +
 ```
 It is harder to tell for the 65 AMG trim, but it seems that our optimal K is approximately 25.
 
-```{r final_plots, echo=FALSE}
+```{r plot setups, include=FALSE}
 knn_model65 = knn.reg(X_train65, X_train65, y_train65, k = 15)
 arrange (D_train65, mileage)
 D_train65$ypred65 = knn_model65$pred
+
+
+knn_model350 = knn.reg(X_train350, X_train350, y_train350, k = 15)
+arrange (D_train350, mileage)
+D_train350$ypred350 = knn_model350$pred
+```
+
+```{r plotting, echo=FALSE}
 p_train65 = ggplot(data = D_train65) + 
   geom_point(data = D_train65, mapping = aes(x = mileage, y = price), color='grey') + 
   theme_bw(base_size=18) +
@@ -237,9 +251,6 @@ p_train65 = ggplot(data = D_train65) +
   labs(title = "Predictions for 65 AMG Trim")
 p_train65
 
-knn_model350 = knn.reg(X_train350, X_train350, y_train350, k = 15)
-arrange (D_train350, mileage)
-D_train350$ypred350 = knn_model350$pred
 p_train350 = ggplot(data = D_train350) + 
   geom_point(data = D_train350, mapping = aes(x = mileage, y = price), color='grey') + 
   theme_bw(base_size=18) +
