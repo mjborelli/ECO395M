@@ -205,7 +205,7 @@ ggplot(data=KRMSE350, aes(x=KRMSE350[,2], y=KRMSE350[,1])) +
   xlim(5,200)
 ```
 
-For the 350 trim, our optimum value of K is K = 15
+For the 350 trim, our optimum value of K is K = 50
 
 ```{r plots65, include = FALSE}
 # For trim 350
@@ -233,12 +233,12 @@ ggplot(data=KRMSE65, aes(x=KRMSE65[,2], y=KRMSE65[,1])) +
 It is harder to tell for the 65 AMG trim, but it seems that our optimal K is approximately 25.
 
 ```{r plot setups, include=FALSE}
-knn_model65 = knn.reg(X_train65, X_train65, y_train65, k = 15)
+knn_model65 = knn.reg(X_train65, X_train65, y_train65, k = 25)
 arrange (D_train65, mileage)
 D_train65$ypred65 = knn_model65$pred
 
 
-knn_model350 = knn.reg(X_train350, X_train350, y_train350, k = 15)
+knn_model350 = knn.reg(X_train350, X_train350, y_train350, k = 50)
 arrange (D_train350, mileage)
 D_train350$ypred350 = knn_model350$pred
 ```

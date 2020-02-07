@@ -48,7 +48,7 @@ for each trim.
 
 ![](Homework-1_files/figure-markdown_strict/plots2-1.png)
 
-For the 350 trim, our optimum value of K is K = 15
+For the 350 trim, our optimum value of K is K = 50
 
 ![](Homework-1_files/figure-markdown_strict/65plot-1.png) It is harder
 to tell for the 65 AMG trim, but it seems that our optimal K is
