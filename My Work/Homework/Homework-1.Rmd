@@ -15,9 +15,6 @@ library(tidyverse)
 ABIA = read.csv("D:/Documents/MA_Econ/Spring/ECO395M/data/ABIA.csv", header=TRUE)
 ```
 
-```{r head, include=FALSE}
-head(ABIA)
-```      
 ```{r frame, include=FALSE}
 daytable = table(ABIA$DayOfWeek,ABIA$Cancelled,ABIA$CancellationCode)
 dayframe = as.data.frame(daytable, stringsAsFactors = FALSE)
@@ -92,6 +89,8 @@ D_test65 = sclass65AMG[-train65_ind,]
 
 D_test350 = arrange(D_test350, mileage)
 D_test65 = arrange(D_test65, mileage)
+D_train65 = arrange(D_train65, mileage)
+D_train350 = arrange(D_train350, mileage)
 
 #now we split the x and y variables apart
 
@@ -201,9 +200,10 @@ ggplot(data=KRMSE350, aes(x=KRMSE350[,2], y=KRMSE350[,1])) +
   labs(x = "K", y = "RMSE", title = "K v. RMSE for 350 Trim")+
   xlim(5,200)
 ```
+
 For the 350 trim, our optimum value of K is K = 15
 
-```{r plots65, echo = FALSE}
+```{r plots65, include = FALSE}
 # For trim 350
 KRMSE65 = data.frame(numeric(5), numeric(1))
 for (j in 5 : 200) {
@@ -212,7 +212,11 @@ for (j in 5 : 200) {
   KRMSE65[j, 1] = rmse(y_test65, ypred_knn65)
   KRMSE65[j, 2] = j
 }
+```
+```
 library(plyr)
+```
+```{r 65plot, echo=FALSE}
 rename(KRMSE65, c("numeric.5." = "RMSE", "numeric.1." = "K"))
 #getting rid of first four rows (no values)
 ggplot(data=KRMSE65, aes(x=KRMSE65[,2], y=KRMSE65[,1])) +
@@ -222,12 +226,26 @@ ggplot(data=KRMSE65, aes(x=KRMSE65[,2], y=KRMSE65[,1])) +
 ```
 It is harder to tell for the 65 AMG trim, but it seems that our optimal K is approximately 25.
 
-```{r final_plots}
+```{r final_plots, echo=FALSE}
 knn_model65 = knn.reg(X_train65, X_train65, y_train65, k = 15)
-
-D_train65$ypred = knn_model65$pred
+arrange (D_train65, mileage)
+D_train65$ypred65 = knn_model65$pred
 p_train65 = ggplot(data = D_train65) + 
-  geom_point(mapping = aes(x = mileage, y = price), color='lightgrey') + 
-  theme_bw(base_size=18) + 
-  ylim(7000, 20000) + xlim(0,36)
-p_train65 + geom_path(mapping = aes(x=mileage, y=ypred), color='red', size=1.5)
+  geom_point(data = D_train65, mapping = aes(x = mileage, y = price), color='grey') + 
+  theme_bw(base_size=18) +
+  geom_path(data = D_train65, mapping = aes(x=mileage, y = ypred65), color='red', size=1.5) +
+  labs(title = "Predictions for 65 AMG Trim")
+p_train65
+
+knn_model350 = knn.reg(X_train350, X_train350, y_train350, k = 15)
+arrange (D_train350, mileage)
+D_train350$ypred350 = knn_model350$pred
+p_train350 = ggplot(data = D_train350) + 
+  geom_point(data = D_train350, mapping = aes(x = mileage, y = price), color='grey') + 
+  theme_bw(base_size=18) +
+  geom_path(data = D_train350, mapping = aes(x=mileage, y = ypred350), color='red', size=1.5) +
+  labs(title = "Predictions for 350 Trim")
+p_train350
+```
+
+Of the two trims, the 350 trim has a higher optimal K than the 65 AMG trim. This has nothing to do with the difference in the trims. The main reason for the difference is that the subset of S-Class cars with 350 trim is larger than the subset with 65 AMG trim. When you have more data, the optimal value for K increases because your points will be closer together and therefore create better predictions.
