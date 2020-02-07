@@ -23,8 +23,6 @@ and 65 AMG trim levels as subsets of the data.
 The following are the Root Mean-Squared Errors (RMSE) for each of the
 trim types at specified:
 
-    # I originally wanted to do inline code to display the values, but they would not translate to R correctly.
-
 ### Trim: 350
 
 -   (K = 5) = 10550.83
@@ -48,13 +46,9 @@ trim types at specified:
 We can look at plots of RMSE versus K to estimate what the optimal K is
 for each trim.
 
-    ## Warning: Removed 4 rows containing missing values (geom_path).
-
 ![](Homework-1_files/figure-markdown_strict/plots2-1.png)
 
 For the 350 trim, our optimum value of K is K = 15
-
-    ## Warning: Removed 4 rows containing missing values (geom_path).
 
 ![](Homework-1_files/figure-markdown_strict/65plot-1.png) It is harder
 to tell for the 65 AMG trim, but it seems that our optimal K is

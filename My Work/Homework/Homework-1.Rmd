@@ -159,7 +159,7 @@ rmse_150_65 = rmse(y_test65, ypred_knn150_65)
 rmse_200_65 = rmse(y_test65, ypred_knn200_65)
 ```
 The following are the Root Mean-Squared Errors (RMSE) for each of the trim types at specified:
-```
+```{r note, include=FALSE}
 # I originally wanted to do inline code to display the values, but they would not translate to R correctly.
 ```
 ### Trim: 350
@@ -198,7 +198,7 @@ library(plyr)
 ```{r rename, include=FALSE}
 rename(KRMSE350, c("numeric.5." = "RMSE", "numeric.1." = "K"))
 ```
-```{r plots2, echo = FALSE}
+```{r plots2, echo = FALSE, warning=FALSE}
 ggplot(data=KRMSE350, aes(x=KRMSE350[,2], y=KRMSE350[,1])) +
   geom_line(aes(x=KRMSE350[,2], y=KRMSE350[,1]))+
   labs(x = "K", y = "RMSE", title = "K v. RMSE for 350 Trim")+
@@ -223,7 +223,7 @@ library(plyr)
 ```{r rename2, include=FALSE}
 rename(KRMSE65, c("numeric.5." = "RMSE", "numeric.1." = "K"))
 ```
-```{r 65plot, echo=FALSE}
+```{r 65plot, echo=FALSE, warning=FALSE}
 #getting rid of first four rows (no values)
 ggplot(data=KRMSE65, aes(x=KRMSE65[,2], y=KRMSE65[,1])) +
   geom_line(aes(x=KRMSE65[,2], y=KRMSE65[,1]))+
