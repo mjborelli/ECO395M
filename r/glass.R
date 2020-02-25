@@ -30,8 +30,8 @@ p0 + geom_boxplot(aes(x=type, y=Al))
 # some are more subtle
 p0 + geom_boxplot(aes(x=type, y=RI))
 p0 + geom_boxplot(aes(x=type, y=Si))
-
-
+p0 + geom_boxplot(aes(x=type, y=Fe))
+p0 + geom_boxplot(aes(x=type, y=K))
 
 ## for illustration, consider the RIxMg plane (i.e., just 2D)
 X = dplyr::select(fgl, RI, Mg) 
@@ -92,10 +92,44 @@ sum(knn25 != y_test)/n_test
 # 2) choose K to optimize out-of-sample error rate
 # 3) average over multiple train/test splits to minimize the effect of Monte Carlo variability
 
+###########################################################################
+x = dplyr::select(fgl, Na, Mg, K, Ca, Ba, Fe) #this selects coulmns of fgl except for type as x
+y = fgl$type
+n = length(y)
 
+n_train_ex = round(0.8*n)
+n_test_ex = n - n_train_ex
+train_ind_ex = sample.int(n, n_train_ex)
+X_train_ex = x[train_ind_ex,]
+X_test_ex = x[-train_ind_ex,]
+y_train_ex = y[train_ind_ex]
+y_test_ex = y[-train_ind_ex]
 
+#create scaled variables
+scale_factors_ex = apply(X_train_ex, 8, sd)
+X_train_sc_ex = scale(X_train_ex, scale=scale_factors_ex)
+X_test_sc_ex = scale(X_test_ex, scale=scale_factors_ex)
+
+knn3_ex = class::knn(train=X_train_sc_ex, test= X_test_sc_ex, cl=y_train_ex, k=3)
+knn25_ex = class::knn(train=X_train_sc_ex, test= X_test_sc_ex, cl=y_train_ex, k=10)
+
+knn_trainset_ex = data.frame(X_train_sc_ex, type = y_train_ex)
+knn3_testset_ex = data.frame(X_test_sc_ex, type = y_test_ex, type_pred = knn3_ex)
+knn25_testset_ex = data.frame(X_test_sc_ex, type = y_test_ex, type_pred = knn25_ex)
+
+# test set errors?
+knn3_testset_ex
+knn25_testset_ex
+
+# Make a table of classification errors
+table(knn3_ex, y_test_ex)
+1 - sum(knn3_ex != y_test_ex)/n_test_ex
+table(knn25_ex, y_test_ex)
+1 - sum(knn25_ex != y_test_ex)/n_test
+
+################################################################
 ## for illustration, consider the RIxMg plane (i.e., just 2D)
-X = dplyr::select(fgl, -type) 
+X = dplyr::select(fgl, RI, Mg) 
 #X = select(fgl, RI, Mg)
 y = fgl$type
 n = length(y)
@@ -109,11 +143,11 @@ library(foreach)
 library(mosaic)
 k_grid = seq(1, 25, by=2)
 err_grid = foreach(k = k_grid,  .combine='c') %do% {
-  out = do(100)*{
+  out = do(250)*{
     train_ind = sample.int(n, n_train)
     X_train = X[train_ind,]
     X_test = X[-train_ind,]
-    y_train = y[train_ind]
+    y_train = y[train_ind] ## no commas because y is a vector wow
     y_test = y[-train_ind]
     
     # scale the training set features
@@ -134,3 +168,4 @@ err_grid = foreach(k = k_grid,  .combine='c') %do% {
 
 
 plot(k_grid, err_grid)
+
