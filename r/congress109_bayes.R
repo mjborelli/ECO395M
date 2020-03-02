@@ -2,8 +2,8 @@ library(tidyverse)
 library(foreach)
 
 # read in data
-congress109 = read.csv("../data/congress109.csv", header=TRUE, row.names=1)
-congress109members = read.csv("../data/congress109members.csv", header=TRUE, row.names=1)
+congress109 = read.csv("./data/congress109.csv", header=TRUE, row.names=1)
+congress109members = read.csv("./data/congress109members.csv", header=TRUE, row.names=1)
 
 # corpus statistics
 N = nrow(congress109)
@@ -43,7 +43,7 @@ priors = table(y_train) %>% prop.table
 
 
 # now try a query doc in the test set
-i = 5
+i = 6
 test_doc = X_test[i,]
 test_doc %>% sort
 sum(test_doc * log(pvec_0)) + log(priors[1])
